@@ -7,6 +7,8 @@ import numpy as np
 
 import nltk
 
+from pymongo import MongoClient
+
 from nltk.stem import WordNetLemmatizer
 lemmatizer = WordNetLemmatizer()
 import json
@@ -21,6 +23,22 @@ import pickle
 intents = json.loads(open('code/intents.json').read())
 words = pickle.load(open('code/words.pkl','rb'))
 classes = pickle.load(open('code/classes.pkl','rb'))
+
+
+
+# Connect to MongoDB
+client = MongoClient('mongodb+srv://Nipun:irwa@cluster0.wl2trfq.mongodb.net/')
+db = client['bookstore']
+books_collection = db['books']
+
+# Function to get the number of available books for a specific title
+def get_available_books(title):
+    book = books_collection.find_one({"Name": title})  # Use "Name" as the column name for book titles
+    if book:
+        return book['Qty']  # Use "Qty" as the column name for quantity of books
+    else:
+        return None  # Return None if the book is not found
+
 
 def clean_up_sentence(sentence):
     # tokenize the pattern - split words into array
@@ -67,10 +85,40 @@ def getResponse(ints, intents_json):
     return result
 
 def chatbot_response(text):
-    ints = predict_class(text, model)
-    res = getResponse(ints, intents)
-    return res
+    # Check if the user query asks for the number of available books for a specific title
+    if "how many books available in" in text.lower():
+        # Extract the book title from the user query (you might need more sophisticated NLP for this)
+        # For simplicity, here we assume the book title is within single quotes
+        title_start_index = text.find("'") + 1
+        title_end_index = text.rfind("'")
+        book_title = text[title_start_index:title_end_index]
+        
+        # Get the number of available books for the specified title
+        available_books_count = get_available_books(book_title)
+        
+        if available_books_count is not None:
+            # Generate the response with the available books count
+            response = f"There are {available_books_count} available books for '{book_title}'"
+        else:
+            # If the book is not found, provide a default response
+            response = "I'm sorry, but I couldn't find information about that book. " \
+                       "Please contact us for further assistance."
+        
+        return response
+    
+    # Handle other intents and provide appropriate responses...
+    
+    # Default response if no specific intent is detected
+    else:
+        ints = predict_class(text, model)
+        res = getResponse(ints, intents)
+        return res
+        
 
+
+user_query = "How many books available in 'To Kill a Mockingbird'"
+response = chatbot_response(user_query)
+print(response)
 """GUI Interface
 
 """
