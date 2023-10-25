@@ -1,0 +1,290 @@
+{
+  "intents": [
+
+    {
+      "tag": "availability_query",
+      "patterns": [
+          "How many copies of '{book}' do you have?",
+          "Is '{book}' in stock?",
+          "Can I buy '{book}'?",
+          "How many books available in '{book}'?",
+          "Are there any '{book}' available?"
+      ],
+      "responses": [
+          "We currently have {count} copies of '{book}' in stock.",
+          "Yes, '{book}' is available. We have {count} copies in stock.",
+          "Certainly! We have {count} copies of '{book}' available for purchase."
+      ]
+  },
+
+  {
+    "tag": "price_query",
+    "patterns": [
+        "What is the cost of '{book}'?",
+        "How much is '{book}'?",
+        "What's the price of '{book}'?"
+    ],
+    "responses": [
+        "The price of '{book}' is {price}.",
+        "'{book}' costs {price} per copy.",
+        "Certainly! '{book}' is priced at {price}."
+    ]
+},
+
+{
+  "tag": "promotion_query",
+  "patterns": [
+      "Are there any ongoing promotions?",
+      "Tell me about the current promotions.",
+      "What promotions are available?",
+      "Are there any discounts or offers?",
+      "Tell me about the latest deals."
+  ],
+  "responses": [
+      "Yes, we currently have some exciting promotions running!",
+      "Certainly! We have several ongoing promotions. Let me tell you about them:",
+      "Absolutely, we have some great promotions happening right now.",
+      "Sure, here are our latest promotions:",
+      "Yes, we have discounts and offers available. Let me share the details with you:"
+  ]
+},
+
+{
+  "tag": "description_query",
+  "patterns": [
+      "Tell me everything about this '{book}'",
+      "Give a description about '{book}"
+  ],
+  "responses": [
+      "Certainly! '{book}' is {description}."
+  ]
+},
+
+{
+  "tag": "order_tracking",
+  "patterns": [
+    "How can I track my order with order number {order_number}?",
+    "Where is my order {order_number}?",
+    "Check the status of order {order_number}."
+  ],
+  "responses": [
+    "The current status of your {order_number} order is {status}."
+     
+  ]
+},
+
+
+
+{"tag": "help",
+  "patterns": ["Could you help me?",
+   "give me a hand please",
+   "Can you help?",
+   "What can you do for me?",
+   "I need a support",
+   "I need a help",
+   "support me please"],
+  "responses": ["Sure, I can assist you.",
+   "Yes Sure, How can I support you"]},
+   
+
+    {
+      "tag": "greeting",
+      "patterns": [
+        "Hi",
+        "Hey",
+        "Hay",
+        "Hello",
+        "Is anyone there?",
+        "Good day",
+        "Good Morning",
+        "Good evening",
+        "Good Afternoon"
+      ],
+      "responses": [
+        "Hey",
+        "Hello, thanks for visiting.",
+        "Hi there, What can I do for you?",
+        "Hi there,How can I help?",
+        "Hello! It's great to see you. "
+      ]
+    },
+    {
+      "tag": "personalize",
+      "patterns": [
+        "How are you?",
+        "How about you?",
+        "How are you doing?",
+        "How is your day?"
+      ],
+      "responses": [
+        "Hi there! I'm doing well. How can I help you?"
+      ]
+    },
+            {
+      "tag": "personal_response",
+      "patterns": [
+        "I'm good",
+        "I'm good",
+        "I'm doing good",
+        "I am good",
+        "I am okay"
+      ],
+      "responses": [
+        "Great to hear you are doing good."
+      ]
+    },   
+    {
+      "tag": "goodbye",
+      "patterns": ["Bye", "See you later", "Goodbye"],
+      "responses": [
+        "See you later", "Have a nice day", "Bye! Come back again"
+      ]
+    },
+    {"tag": "thanks",
+    "patterns": ["Thanks",
+     "Thank you",
+     "Thats helpful",
+     "Thanks for the help"],
+    "responses": ["Happy to help!",
+     "Any time!",
+     "My pleasure",
+     "Youre most welcome!"]},
+    {
+      "tag": "items_ask",
+      "patterns": [
+        "Which items do you have?",
+        "What kinds of items are there?",
+        "What do you sell?"
+      ],
+      "responses": [
+        "I have books, acesseries related items, You can search our ONEX bookstore page.","Using Onex bookshop page you can serach all available products" 
+      ]
+    },
+    {
+      "tag": "payments_methods",
+      "patterns": [
+        "Which payment mathod can I use?",
+        "Do you take credit cards?",
+        "Do you accept Mastercard?",
+        "Can I pay with Cash?",
+        "Is this a cash only?",
+        "What are your payment methods?",
+        "How do I pay?"
+      ],
+      "responses": [
+        "We accept VISA, Mastercard and Cash", "You can pay using VISA, Master card or cash"
+      ]
+    },
+
+    {
+      "tag": "ebooks",
+      "patterns": [
+        "Do you offer ebooks?",
+        "Are ebooks  available?",
+       "Can I purchase digital versions of books?"
+      ],
+      "responses": [
+        "Yes, we offer ebooks in our store(ONEX Bookshop Piliyndala).Please visit and order or using website you can order",
+        " Absolutely! You can purchase digital versions of books, use website or visit store"
+      ]
+    },
+
+    {
+      "tag": "deliveryTypes",
+      "patterns": [
+        "How long does delivery take?",
+        "How long does shipping take?",
+        "Please Tell me about my delivery",
+        "When do I get my delivery?",
+        "Why is my order not delivered yet"
+      ],
+      "responses": [
+        "Delivery takes normally 3 to 5 days."
+      ]
+    },
+
+    {
+      "tag": "delay",
+      "patterns": [
+        "Why is my order delayed? ",
+        "Why is my order not delivered yet?",
+        "When do I get my delivery?"
+      ],
+      "responses": [
+        "We are really sorry if there has been a delay in your order! Please wait 2 or 3 days more",
+        "If your order is past up to 5 days after delivery period, Call our book store"
+       
+      ]
+    },
+
+
+   
+    {
+      "tag": "Contact",
+      "patterns": [
+        "can I call customer service",
+        "customer support number",
+        "Give me phone number?",
+        "how to contact customer service",
+        "customer service number"
+
+      ],
+      "responses": [
+        "Contact us : Phone: 0112-703-307. Email: onex25@gmail.com, Timings are from 09:00 AM to 05:00 PM from Monday to Saturday."
+      ]
+    },
+    {
+      "tag": "cancel_order",
+      "patterns": [
+        "Can I cancel my order?",
+        "Why is my order cancelled?",
+        "How do I can cancel my order",
+        "Can I cancel an order"
+      ],
+      "responses": [
+        "Order can only be cancelled within 7 days of placement. Contact customer support service."
+      ]
+    },
+    {
+      "tag": "refund",
+      "patterns": [
+        "Can I refund an item.",
+        "I want to refund an item",
+        "can I refund my order",
+        "Are refunds available"
+      ],
+      "responses": [
+        "Refund can only be issued within 7 days of placement. Visit our store or online you can refund"
+      ]
+    },
+    
+  
+    {
+      "tag": "return",
+      "patterns": [
+        "How long do return items take",
+        "When will my items be returned",
+        "When can I get a refund for return items?",
+        "Are refunds available for return?"
+      ],
+      "responses": [
+        "Return can only be issued within 7 days of placement. Visit our store or online you can return "
+      ]
+    },
+ 
+
+    {
+      "tag": "usevoucher",
+      "patterns": [
+        "How to use a voucher?",
+        "Can I use a voucher?",
+        "How to use a voucher?"
+      ],
+      "responses": [
+        "You cannot use voucher in online, but you can use voucher by visiting our store "
+      ]
+    }
+    
+          
+  ]
+}
