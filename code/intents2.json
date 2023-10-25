@@ -32,6 +32,24 @@
 },
 
 {
+  "tag": "promotion_query",
+  "patterns": [
+      "Are there any ongoing promotions?",
+      "Tell me about the current promotions.",
+      "What promotions are available?",
+      "Are there any discounts or offers?",
+      "Tell me about the latest deals."
+  ],
+  "responses": [
+      "Yes, we currently have some exciting promotions running!",
+      "Certainly! We have several ongoing promotions. Let me tell you about them:",
+      "Absolutely, we have some great promotions happening right now.",
+      "Sure, here are our latest promotions:",
+      "Yes, we have discounts and offers available. Let me share the details with you:"
+  ]
+},
+
+{
   "tag": "description_query",
   "patterns": [
       "Tell me everything about this '{book}'",
@@ -106,8 +124,8 @@
       "tag": "personal_response",
       "patterns": [
         "I'm good",
-        "Im good",
-        "Im doing good",
+        "I'm good",
+        "I'm doing good",
         "I am good",
         "I am okay"
       ],

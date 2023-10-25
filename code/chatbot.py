@@ -8,6 +8,8 @@ import re
 import nltk
 
 from pymongo import MongoClient
+from prettytable import PrettyTable
+
 
 from nltk.stem import WordNetLemmatizer
 lemmatizer = WordNetLemmatizer()
@@ -30,7 +32,8 @@ classes = pickle.load(open('code/classes.pkl','rb'))
 client = MongoClient('mongodb+srv://Nipun:irwa@cluster0.wl2trfq.mongodb.net/')
 db = client['bookstore'] #db name
 books_collection = db['books']
-orders_collection = db['orders'] #table name
+orders_collection = db['orders']
+promotion_collection = db['promotions'] #table name
 
 # Function to get the number of available books for a specific title
 def get_available_books(title):
@@ -257,8 +260,38 @@ def handle_description_query(raw_text, intent):
         return "I'm sorry, but I couldn't understand the book title. " \
                "Please try again with a different query."
 
+def get_promotion_books():
+    promotion_books = promotion_collection.find({})
+    return list(promotion_books)  # Return None if the book is not found
+ 
+   
 
 
+
+def handle_promotion_query(intent):
+    print("handle_promotion_query")
+    # Retrieve promotions from your data source
+    promotions = get_promotion_books()
+    
+    if promotions:
+        # Create a PrettyTable object
+        table = PrettyTable()
+        table.field_names = ["Book", "Promotion (%)"]
+        
+        # Add data to the table
+        for promotion in promotions:
+            table.add_row([promotion['book'], promotion['promotion (%)']])
+        
+        # Choose a random response template
+        response_template = random.choice(intent['responses'])
+        response = response_template
+        
+        # Concatenate the table string to the response
+        response += "\n\n" + str(table)
+        
+        return response
+    else:
+        return "I'm sorry, but there are currently no promotions available."
 def getResponse(intents, intents_json, text):
     print(text)
     max_prob_intent = None
@@ -288,6 +321,8 @@ def getResponse(intents, intents_json, text):
                 elif intent['tag'] == "order_tracking":
                     # Call the separate function to handle order tracking queries
                     return handle_order_tracking_query(text, intent)
+                elif intent['tag'] == "promotion_query":
+                    return handle_promotion_query(intent)
                 else:
                     return random.choice(intent['responses'])
     
@@ -302,61 +337,3 @@ def chatbot_response(text):
     return res
 
 
-
-
-"""GUI Interface
-
-"""
-
-
-
-# import tkinter as tk
-
-# BG_GRAY = "#ABB2B9"
-# BG_COLOR = "#c5f0e3"
-# TEXT_COLOR = "#000000"
-
-# def send():
-#     msg = entry_box.get()
-#     entry_box.delete(0, tk.END)
-#     if msg.strip() != '':
-#         chat_log.config(state=tk.NORMAL)
-#         chat_log.insert(tk.END, "You: " + msg + '\n\n')
-#         chat_log.config(foreground="#000000", font=("Verdana", 12))
-
-#         res = chatbot_response(msg)  # Replace with your chatbot logic
-#         chat_log.insert(tk.END, "Bot: " + res + '\n\n')
-
-#         chat_log.config(state=tk.DISABLED)
-#         chat_log.yview(tk.END)
-
-# base = tk.Tk()
-# base.title("E-Commerce Chatbot")
-# base.geometry("800x600")
-# base.config(bg=BG_COLOR)
-
-# # Header
-# head_label = tk.Label(base, bg=BG_COLOR, fg=TEXT_COLOR, text="Welcome to E-Commerce Chatbot", font=("Helvetica", 20, 'bold'), pady=20)
-# head_label.pack(fill=tk.X)
-
-# # Chat Log
-# chat_log = tk.Text(base, bd=0, bg=BG_COLOR, fg=TEXT_COLOR, font=("Helvetica", 12), wrap=tk.WORD, height=10)
-# chat_log.config(state=tk.DISABLED)
-# chat_log.pack(expand=tk.YES, fill=tk.BOTH, padx=20, pady=10)
-
-# # Scrollbar for Chat Log
-# scrollbar = tk.Scrollbar(chat_log)
-# scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-# scrollbar.config(command=chat_log.yview)
-# chat_log.config(yscrollcommand=scrollbar.set)
-
-# # User Input
-# entry_box = tk.Entry(base, bg="white", font=("Arial", 14))
-# entry_box.bind("<Return>", lambda event=None: send())
-# entry_box.pack(fill=tk.X, padx=20, pady=10, side=tk.LEFT, expand=tk.YES)
-
-# # Send Button
-# send_button = tk.Button(base, text="Send", command=send, font=("Verdana", 14, 'bold'), bg="#ed9061", activebackground="#3c9d9b", fg='#ffffff')
-# send_button.pack(padx=10, pady=10, side=tk.RIGHT)
-
-# base.mainloop()
