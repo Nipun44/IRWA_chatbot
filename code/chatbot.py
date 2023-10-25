@@ -42,16 +42,22 @@ def get_available_books(title):
 
 
 def clean_up_sentence(sentence):
+    print("Input to clean_up_sentence:", sentence)
     # tokenize the pattern - split words into array
     sentence_words = nltk.word_tokenize(sentence)
+    print("Tokenized words:", sentence_words)
     # stem each word - create short form for word
     sentence_words = [lemmatizer.lemmatize(word.lower()) for word in sentence_words]
+    print("Lemmatized words:", sentence_words)
     return sentence_words
-# return bag of words array: 0 or 1 for each word in the bag that exists in the sentence
+
 
 def bow(sentence, words, show_details=True):
     # tokenize the pattern
+    print("Input to bow:", sentence)
+    # tokenize the pattern
     sentence_words = clean_up_sentence(sentence)
+    print("Words after clean_up_sentence:", sentence_words)
     # bag of words - matrix of N words, vocabulary matrix
     bag = [0]*len(words)
     for s in sentence_words:
@@ -111,6 +117,7 @@ def get_order_id(raw_text):
 def get_order_status(order_id):
     # Retrieve the status of the specified order from the database
     order = orders_collection.find_one({"Order ID": order_id})
+    
     print(order)
     if order:
         return order['Status']
@@ -288,8 +295,10 @@ def getResponse(intents, intents_json, text):
 
 
 def chatbot_response(text):
-    intents = predict_class(text, model)
-    res = getResponse(intents, intents_json, text)
+    # Extract the message from the dictionary
+    user_message = text.get('message', '')
+    intents = predict_class(user_message, model)
+    res = getResponse(intents, intents_json, user_message)
     return res
 
 
@@ -301,53 +310,53 @@ def chatbot_response(text):
 
 
 
-import tkinter as tk
+# import tkinter as tk
 
-BG_GRAY = "#ABB2B9"
-BG_COLOR = "#c5f0e3"
-TEXT_COLOR = "#000000"
+# BG_GRAY = "#ABB2B9"
+# BG_COLOR = "#c5f0e3"
+# TEXT_COLOR = "#000000"
 
-def send():
-    msg = entry_box.get()
-    entry_box.delete(0, tk.END)
-    if msg.strip() != '':
-        chat_log.config(state=tk.NORMAL)
-        chat_log.insert(tk.END, "You: " + msg + '\n\n')
-        chat_log.config(foreground="#000000", font=("Verdana", 12))
+# def send():
+#     msg = entry_box.get()
+#     entry_box.delete(0, tk.END)
+#     if msg.strip() != '':
+#         chat_log.config(state=tk.NORMAL)
+#         chat_log.insert(tk.END, "You: " + msg + '\n\n')
+#         chat_log.config(foreground="#000000", font=("Verdana", 12))
 
-        res = chatbot_response(msg)  # Replace with your chatbot logic
-        chat_log.insert(tk.END, "Bot: " + res + '\n\n')
+#         res = chatbot_response(msg)  # Replace with your chatbot logic
+#         chat_log.insert(tk.END, "Bot: " + res + '\n\n')
 
-        chat_log.config(state=tk.DISABLED)
-        chat_log.yview(tk.END)
+#         chat_log.config(state=tk.DISABLED)
+#         chat_log.yview(tk.END)
 
-base = tk.Tk()
-base.title("E-Commerce Chatbot")
-base.geometry("800x600")
-base.config(bg=BG_COLOR)
+# base = tk.Tk()
+# base.title("E-Commerce Chatbot")
+# base.geometry("800x600")
+# base.config(bg=BG_COLOR)
 
-# Header
-head_label = tk.Label(base, bg=BG_COLOR, fg=TEXT_COLOR, text="Welcome to E-Commerce Chatbot", font=("Helvetica", 20, 'bold'), pady=20)
-head_label.pack(fill=tk.X)
+# # Header
+# head_label = tk.Label(base, bg=BG_COLOR, fg=TEXT_COLOR, text="Welcome to E-Commerce Chatbot", font=("Helvetica", 20, 'bold'), pady=20)
+# head_label.pack(fill=tk.X)
 
-# Chat Log
-chat_log = tk.Text(base, bd=0, bg=BG_COLOR, fg=TEXT_COLOR, font=("Helvetica", 12), wrap=tk.WORD, height=10)
-chat_log.config(state=tk.DISABLED)
-chat_log.pack(expand=tk.YES, fill=tk.BOTH, padx=20, pady=10)
+# # Chat Log
+# chat_log = tk.Text(base, bd=0, bg=BG_COLOR, fg=TEXT_COLOR, font=("Helvetica", 12), wrap=tk.WORD, height=10)
+# chat_log.config(state=tk.DISABLED)
+# chat_log.pack(expand=tk.YES, fill=tk.BOTH, padx=20, pady=10)
 
-# Scrollbar for Chat Log
-scrollbar = tk.Scrollbar(chat_log)
-scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-scrollbar.config(command=chat_log.yview)
-chat_log.config(yscrollcommand=scrollbar.set)
+# # Scrollbar for Chat Log
+# scrollbar = tk.Scrollbar(chat_log)
+# scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+# scrollbar.config(command=chat_log.yview)
+# chat_log.config(yscrollcommand=scrollbar.set)
 
-# User Input
-entry_box = tk.Entry(base, bg="white", font=("Arial", 14))
-entry_box.bind("<Return>", lambda event=None: send())
-entry_box.pack(fill=tk.X, padx=20, pady=10, side=tk.LEFT, expand=tk.YES)
+# # User Input
+# entry_box = tk.Entry(base, bg="white", font=("Arial", 14))
+# entry_box.bind("<Return>", lambda event=None: send())
+# entry_box.pack(fill=tk.X, padx=20, pady=10, side=tk.LEFT, expand=tk.YES)
 
-# Send Button
-send_button = tk.Button(base, text="Send", command=send, font=("Verdana", 14, 'bold'), bg="#ed9061", activebackground="#3c9d9b", fg='#ffffff')
-send_button.pack(padx=10, pady=10, side=tk.RIGHT)
+# # Send Button
+# send_button = tk.Button(base, text="Send", command=send, font=("Verdana", 14, 'bold'), bg="#ed9061", activebackground="#3c9d9b", fg='#ffffff')
+# send_button.pack(padx=10, pady=10, side=tk.RIGHT)
 
-base.mainloop()
+# base.mainloop()
