@@ -29,7 +29,8 @@ classes = pickle.load(open('code/classes.pkl','rb'))
 # Connect to MongoDB
 client = MongoClient('mongodb+srv://Nipun:irwa@cluster0.wl2trfq.mongodb.net/')
 db = client['bookstore'] #db name
-books_collection = db['books'] #table name
+books_collection = db['books']
+orders_collection = db['orders'] #table name
 
 # Function to get the number of available books for a specific title
 def get_available_books(title):
@@ -85,19 +86,41 @@ def get_book_titles_from_db():
     
     return book_titles
 
-# Example usage:
+def get_order_ids_from_db():
+    # Assuming you have an "Orders" collection in your database
+    # Retrieve all documents from the Orders collection
+    orders_cursor = orders_collection.find({}, {"Order ID": 1, "_id": 0})
+    
+    # Extract order IDs from the cursor and return as a list
+    order_ids = [order['Order ID'] for order in orders_cursor]
+    
+    return order_ids
+
+
+def get_order_id(raw_text):
+    order_ids_from_db = get_order_ids_from_db()
+    
+    # Check if the extracted text matches any order ID from the database
+    for order_id in order_ids_from_db:
+        if str(order_id) in raw_text:
+            print("get_order_id")
+            print(order_id)
+            return str(order_id)
+    return None
+
+def get_order_status(order_id):
+    # Retrieve the status of the specified order from the database
+    order = orders_collection.find_one({"Order ID": order_id})
+    print(order)
+    if order:
+        return order['Status']
+    else:
+        return None
 
 
 def get_book_title(raw_text):
     book_titles_from_db = get_book_titles_from_db()
     
-    # Assuming book title is enclosed in single quotes in the raw input
-    # start_index = raw_text.find("'") + 1
-    # end_index = raw_text.rfind("'")
-    # if start_index != -1 and end_index != -1:
-    #     return raw_text[start_index:end_index].strip()
-    # return None
-        # Check if the extracted text matches any book title from the database
     for book in book_titles_from_db:
         
         if book.lower() in raw_text.lower():
@@ -141,6 +164,8 @@ def handle_price_query(text, intent):
                "Please try again with a different query."
 
 
+
+
 def handle_availability_query(text, intent):
     # Extract the book title from the user query
     book_title = get_book_title(text)
@@ -176,6 +201,31 @@ def get_book_description_from_db(book_title):
         return book['Description']
     else: 
         return None 
+    
+
+def handle_order_tracking_query(text, intent):
+    # Extract the order ID from the user query
+    order_id = get_order_id(text)
+    
+    if order_id:
+        # Get the status of the specified order
+        order_status = get_order_status(order_id)
+        
+        if order_status:
+            # Generate the response with the order status
+            response_template = random.choice(intent['responses'])
+            response = response_template.replace('{order_number}', str(order_id))
+            response = response.replace('{status}', order_status)
+            return response
+        else:
+            # If the order is not found, provide a default response
+            return f"I'm sorry, but I couldn't find information about order number '{order_id}'. " \
+                   "Please contact us for further assistance."
+    else:
+        # If order ID is not extracted, provide a default response
+        return "I'm sorry, but I couldn't understand the order number. " \
+               "Please try again with a different query."
+
 
 def handle_description_query(raw_text, intent):
     # Extract the book title from the user query
