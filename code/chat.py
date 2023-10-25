@@ -104,6 +104,7 @@ def get_book_title(raw_text):
             return book
     return None
 
+
 def get_book_price(book_title):
     # Retrieve the price of the specified book from the database
     book = books_collection.find_one({"Name": book_title})
@@ -117,7 +118,7 @@ def handle_price_query(text, intent):
     print(text)
     # Extract the book title from the user query
     book_title = get_book_title(text)
-    print("handle_price_query" + book_title)
+    
     
     if book_title:
         # Get the price of the specified book from the database
@@ -164,7 +165,41 @@ def handle_availability_query(text, intent):
         # If book title is not extracted, provide a default response
         return "I'm sorry, but I couldn't understand the book title. " \
                "Please try again with a different query."
-               
+
+def get_book_description_from_db(book_title):
+
+    # Retrieve the book description from the database based on the book title
+    book = books_collection.find_one({"Name": book_title})
+    print(book)
+    
+    if book:
+        return book['Description']
+    else: 
+        return None 
+
+def handle_description_query(raw_text, intent):
+    # Extract the book title from the user query
+    book_title = get_book_title(raw_text)
+    
+    if book_title:
+        # Get the description of the specified book from the database or any other data source
+        book_description = get_book_description_from_db(book_title)
+        
+        if book_description:
+            # Generate the response with the book description
+            response_template = random.choice(intent['responses'])
+            response = response_template.replace('{book}', f"'{book_title}'")
+            response = response.replace('{description}', f"'{book_description}'")
+            return response
+        else:
+            # If the book description is not found, provide a default response
+            return f"I'm sorry, but I couldn't find the description for '{book_title}'. " \
+                   "Please contact us for further assistance."
+    else:
+        # If book title is not extracted, provide a default response
+        return "I'm sorry, but I couldn't understand the book title. " \
+               "Please try again with a different query."
+
 
 
 def getResponse(intents, intents_json, text):
