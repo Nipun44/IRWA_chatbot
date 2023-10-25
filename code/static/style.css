@@ -9,14 +9,15 @@ body {
     font-weight: 400;
     font-size: 100%;
     background: #F1F1F1;
+    background-image: url('/static/images/bg.png');
 }
 
 *, html {
-    --primaryGradient: linear-gradient(93.12deg, #06e58c 0.52%, #0d5713 100%);
-    --secondaryGradient: linear-gradient(268.91deg, #276012 -2.14%, #195647 99.69%);
+    --primaryGradient: linear-gradient(93.12deg, #1fc9b1 0.52%, #05392e 100%);
+    --secondaryGradient: linear-gradient(268.91deg, #27e2c2 -2.14%, #05392e 99.69%);
     --primaryBoxShadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
     --secondaryBoxShadow: 0px -10px 15px rgba(0, 0, 0, 0.1);
-    --primary: #0097e6;
+    --primary: #145956;
 }
 
 
@@ -28,18 +29,22 @@ body {
 }
 
 /* CONTENT IS CLOSE */
+
 .chatbox__support {
     display: flex;
     flex-direction: column;
-    background: #eee;
-    width: 350px;
-    height: 400px;
-    z-index: -123456;
+    background: #0d5713;
+    width: 400px; 
+    height: 550px; 
+    
     opacity: 0;
     transition: all .5s ease-in-out;
+    position: relative;
 }
 
-/* CONTENT ISOPEN */
+
+
+
 .chatbox--active {
     transform: translateY(-40px);
     z-index: 123456;
@@ -47,7 +52,7 @@ body {
 
 }
 
-/* BUTTON */
+
 .chatbox__button {
     text-align: right;
 }
@@ -59,22 +64,27 @@ body {
 }
 
 .send__button {
-    padding: 6px;
-    background: transparent;
+    
+    margin: 5px;
+    width: 70px;
+    height: 30px;
+    background: #024832;
+    cursor: pointer;
     border: none;
     outline: none;
-    cursor: pointer;
+    border-radius: 20%; /* Makes the button round */
 }
 
 
-/* HEADER */
+
+
 .chatbox__header {
     position: sticky;
     top: 0;
     background: rgb(26, 2, 95);
 }
 
-/* MESSAGES */
+
 .chatbox__messages {
     margin-top: auto;
     display: flex;
@@ -83,7 +93,7 @@ body {
 }
 
 .messages__item {
-    background: orange;
+    background: rgb(9, 122, 148);
     max-width: 60.6%;
     width: fit-content;
 }
@@ -96,7 +106,7 @@ body {
     margin-right: auto;
 }
 
-/* FOOTER */
+
 .chatbox__footer {
     position: sticky;
     bottom: 0;
@@ -104,14 +114,14 @@ body {
 
 .chatbox__support {
     background: #f9f9f9;
-    height: 450px;
-    width: 350px;
+    height: 580px;
+    width: 460px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
 }
 
-/* HEADER */
+
 .chatbox__header {
     background: var(--primaryGradient);
     display: flex;
@@ -138,7 +148,7 @@ body {
     color: white;
 }
 
-/* Messages */
+
 .chatbox__messages {
     padding: 0 20px;
 }
@@ -165,7 +175,7 @@ body {
     color: white;
 }
 
-/* FOOTER */
+
 .chatbox__footer {
     display: flex;
     flex-direction: row;

@@ -8,7 +8,7 @@ import re
 import nltk
 
 from pymongo import MongoClient
-from prettytable import PrettyTable
+
 
 
 from nltk.stem import WordNetLemmatizer
@@ -274,24 +274,16 @@ def handle_promotion_query(intent):
     promotions = get_promotion_books()
     
     if promotions:
-        # Create a PrettyTable object
-        table = PrettyTable()
-        table.field_names = ["Book", "Promotion (%)"]
-        
-        # Add data to the table
+        # Create a response string with book names and promotions
+        response = "Sure, here are our latest promotions:\n\n"
         for promotion in promotions:
-            table.add_row([promotion['book'], promotion['promotion (%)']])
-        
-        # Choose a random response template
-        response_template = random.choice(intent['responses'])
-        response = response_template
-        
-        # Concatenate the table string to the response
-        response += "\n\n" + str(table)
+            response += f"{promotion['book']} ---- {promotion['promotion (%)']} discount\n\n"
         
         return response
     else:
         return "I'm sorry, but there are currently no promotions available."
+
+
 def getResponse(intents, intents_json, text):
     print(text)
     max_prob_intent = None
