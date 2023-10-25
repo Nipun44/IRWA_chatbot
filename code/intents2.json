@@ -57,41 +57,53 @@
 
 
 
-  
-  {
-      "tag": "fallback",
-      "patterns": ["Can you help me?", "What can you do?", "I need assistance"],
-      "responses": ["Sure, I can assist you. Please feel free to ask any question.", "How can I assist you today?"]
-  },
+{"tag": "help",
+  "patterns": ["Could you help me?",
+   "give me a hand please",
+   "Can you help?",
+   "What can you do for me?",
+   "I need a support",
+   "I need a help",
+   "support me please"],
+  "responses": ["Sure, I can assist you.",
+   "Yes Sure, How can I support you"]},
+   
+
     {
       "tag": "greeting",
       "patterns": [
         "Hi",
         "Hey",
-        "Is anyone there?",
+        "Hay",
         "Hello",
-        "Good day"
+        "Is anyone there?",
+        "Good day",
+        "Good Morning",
+        "Good evening",
+        "Good Afternoon"
       ],
       "responses": [
-        "Hey :-) My name is Allan!",
-        "Hello, thanks for visiting. My name is Allan!",
-        "Hi there, My name is Allan!. What can I do for you?",
-        "Hi there, My name is v! How can I help?"
+        "Hey",
+        "Hello, thanks for visiting.",
+        "Hi there, What can I do for you?",
+        "Hi there,How can I help?",
+        "Hello! It's great to see you. "
       ]
     },
     {
-      "tag": "personal",
+      "tag": "personalize",
       "patterns": [
         "How are you?",
+        "How about you?",
         "How are you doing?",
         "How is your day?"
       ],
       "responses": [
-        "I'm good, all's good, thanks. How about you?"
+        "Hi there! I'm doing well. How can I help you?"
       ]
     },
             {
-      "tag": "user response",
+      "tag": "personal_response",
       "patterns": [
         "I'm good",
         "Im good",
@@ -107,45 +119,60 @@
       "tag": "goodbye",
       "patterns": ["Bye", "See you later", "Goodbye"],
       "responses": [
-        "See you later, thanks for visiting. Hope I was able to help!",
-        "Have a nice day. Hope I was able to help!"
+        "See you later", "Have a nice day", "Bye! Come back again"
       ]
     },
+    {"tag": "thanks",
+    "patterns": ["Thanks",
+     "Thank you",
+     "Thats helpful",
+     "Thanks for the help"],
+    "responses": ["Happy to help!",
+     "Any time!",
+     "My pleasure",
+     "Youre most welcome!"]},
     {
-      "tag": "thanks",
-      "patterns": ["Thanks", "Thank you", "That's helpful", "Thank's a lot!", "thx", "thnks"],
-      "responses": ["Happy to help!", "Any time!", "My pleasure"]
-    },
-    {
-      "tag": "items",
+      "tag": "items_ask",
       "patterns": [
         "Which items do you have?",
         "What kinds of items are there?",
-        "What do you sell?",
-        "What do you offer?",
-        "What can I buy?"
+        "What do you sell?"
       ],
       "responses": [
-        "Search your preference in our flagship store's search bar to see all available products. "
+        "I have books, acesseries related items, You can search our ONEX bookstore page.","Using Onex bookshop page you can serach all available products" 
       ]
     },
     {
-      "tag": "payments",
+      "tag": "payments_methods",
       "patterns": [
+        "Which payment mathod can I use?",
         "Do you take credit cards?",
         "Do you accept Mastercard?",
         "Can I pay with Cash?",
-        "Are you cash only?",
+        "Is this a cash only?",
         "What are your payment methods?",
         "How do I pay?"
       ],
       "responses": [
-        "We accept VISA, Mastercard and Cash"
+        "We accept VISA, Mastercard and Cash", "You can pay using VISA, Master card or cash"
       ]
     },
 
     {
-      "tag": "delivery",
+      "tag": "ebooks",
+      "patterns": [
+        "Do you offer ebooks?",
+        "Are ebooks  available?",
+       "Can I purchase digital versions of books?"
+      ],
+      "responses": [
+        "Yes, we offer ebooks in our store(ONEX Bookshop Piliyndala).Please visit and order or using website you can order",
+        " Absolutely! You can purchase digital versions of books, use website or visit store"
+      ]
+    },
+
+    {
+      "tag": "deliveryTypes",
       "patterns": [
         "How long does delivery take?",
         "How long does shipping take?",
@@ -154,8 +181,7 @@
         "Why is my order not delivered yet"
       ],
       "responses": [
-        "Delivery takes 2-4 days. Please bear with us!",
-        "Shipping takes 2-4 days.  Please bear with us!"
+        "Delivery takes normally 3 to 5 days."
       ]
     },
 
@@ -163,50 +189,34 @@
       "tag": "delay",
       "patterns": [
         "Why is my order delayed? ",
-        "Did my order get delayed?",
         "Why is my order not delivered yet?",
         "When do I get my delivery?"
       ],
       "responses": [
-        "We are really sorry if there has been a delay in your order! If your order is within delivery period, We recommend you to please wait during this period since our Delivery Heroes make 3 attempts to deliver your order!",
-        "If your order is past up to 3 days after delivery period, There may be logistic issues causing a delay in delivery. Please type 'Common reasons for delivery delay' to know more about this.",
-        "We appreciate if you could wait for your items as most orders are delivered successfully within this period.",
-        "If your order is past more than 3 days, Since there may be unexpected issues causing delivery delays, you can click on 'Need more Help' for further assistance."
+        "We are really sorry if there has been a delay in your order! Please wait 2 or 3 days more",
+        "If your order is past up to 5 days after delivery period, Call our book store"
+       
       ]
     },
+
+
+   
     {
-      "tag": "reasons",
+      "tag": "Contact",
       "patterns": [
-        "Common reasons for delivery delay",
-        "common reasons for delivery delay",
-        "reasons for delay",
-        "delivery delay"
-      ],
-      "responses": [
-        "Reasons include Seller Sourcing Issues, Courier Issues, Cross Border shipment delay, Wrong Address or Phone Number, and Unavailability of Customer. "
-      ]
-    },
-    {
-      "tag": "more",
-      "patterns": [
-        "Need more help",
-        "help me more",
-        "can I talk to an agent",
         "can I call customer service",
         "customer support number",
+        "Give me phone number?",
         "how to contact customer service",
-        "customer service number",
-        "contact number for help",
-        "helpline number",
-        "How to become a seller",
-        "How to contact a seller"
+        "customer service number"
+
       ],
       "responses": [
-        "Contact us for further information here: Phone: 021-111-132729. Timings are from 09:00 AM to 05:00 PM from Monday to Saturday."
+        "Contact us : Phone: 0112-703-307. Email: onex25@gmail.com, Timings are from 09:00 AM to 05:00 PM from Monday to Saturday."
       ]
     },
     {
-      "tag": "cancel",
+      "tag": "cancel_order",
       "patterns": [
         "Can I cancel my order?",
         "Why is my order cancelled?",
@@ -214,8 +224,7 @@
         "Can I cancel an order"
       ],
       "responses": [
-        "Order can only be cancelled within 7 days of placement. Digital goods do not qualify for refund.",
-        "Visit my orders page to check status of specific orders."
+        "Order can only be cancelled within 7 days of placement. Contact customer support service."
       ]
     },
     {
@@ -227,36 +236,11 @@
         "Are refunds available"
       ],
       "responses": [
-        "Refund can only be issued within 7 days of placement. Digital goods do not qualify for refund.",
-        "Visit my orders page to check for specific orders."
+        "Refund can only be issued within 7 days of placement. Visit our store or online you can refund"
       ]
     },
-    {
-      "tag": "refund status",
-      "patterns": [
-        "Why is the status Refunded when it's not credited?",
-        "No refund even though status is refunded",
-        "No refund when status says refunded",
-        "I did not receive my refund money",
-        "Refund money not received"
-      ],
-      "responses": [
-        "Please be patient as refunds take upto 30 days to receive into bank. "
-      ]
-    },
-    {
-      "tag": "refund",
-      "patterns": [
-        "Can I refund an item.",
-        "I want to refund an item",
-        "can I refund my order",
-        "Are refunds available"
-      ],
-      "responses": [
-        "Refund can only be issued within 7 days of placement. Digital goods do not qualify for refund.",
-        "Visit my orders page to check for specific orders."
-      ]
-    },
+    
+  
     {
       "tag": "return",
       "patterns": [
@@ -266,48 +250,23 @@
         "Are refunds available for return?"
       ],
       "responses": [
-        "Return takes 6 to 10 business days. There are 2 parts to the return process. In the first part, we check the items received from you to verify the issue highlighted in your return claim. Once we've verified and accepted your return, we initiate the refund process which takes 1 business day for Daraz wallet and 2-10 business days for bank or card. "
+        "Return can only be issued within 7 days of placement. Visit our store or online you can return "
       ]
     },
-    {
-      "tag": "withdraw refunds",
-      "patterns": [
-        "How to withdraw refunds from wallet?",
-        "Withdraw funds",
-        "Can I withdraw refunds"
-      ],
-      "responses": [
-        "Withdrawing refunds from your wallet is very easy. Please follow the steps below: Step 1: Click on the 'Wallet' icon on the top right corner of the Daraz App, or click here. Step 2: Click on the 'Balance Details' Icon. Step 3: Click on 'Withdraw' button. Step 4: Enter your bank account details and click 'Withdraw'. Step 5: You will receive a verification email, click confirm to initiate your withdrawal request."
-      ]
-    },
-    
+ 
 
     {
-      "tag": "use voucher",
+      "tag": "usevoucher",
       "patterns": [
         "How to use a voucher?",
         "Can I use a voucher?",
         "How to use a voucher?"
       ],
       "responses": [
-        "You can add a voucher by clicking on My Cart > Check Out > Enter Voucher Code > APPLY. "
-      ]
-    },
-        {
-      "tag": "profile info",
-      "patterns": [
-        "How can I change my profile information",
-        "I want to change my password",
-        "I want to change my phone number",
-        "I want to change my address",
-        "I want to Reset my password",
-        "I want to delete my account",
-        "delete my account"
-      ],
-      "responses": [
-        "You can easily add or change your account details by following the steps below: Step 1: Click on 'Account', Step 2: Click on 'Manage my account' from the icon, Step 3: You change or edit your name, address, email address, mobile number, etc., Step 4: Fill in the required details, and click on Save. Note: You can also change your delivery address from the Checkout page before proceeding to pay."
+        "You cannot use voucher in online, but you can use voucher by visiting our store "
       ]
     }
+    
           
   ]
 }
