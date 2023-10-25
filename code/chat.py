@@ -4,7 +4,7 @@ import json
 import random
 import pickle
 import numpy as np
-
+import re
 import nltk
 
 from pymongo import MongoClient
@@ -20,7 +20,7 @@ import pickle
 # nltk.download('wordnet')
 
 
-intents = json.loads(open('code/intents.json').read())
+intents_json = json.loads(open('code/intents2.json').read())
 words = pickle.load(open('code/words.pkl','rb'))
 classes = pickle.load(open('code/classes.pkl','rb'))
 
@@ -75,50 +75,140 @@ def predict_class(sentence, model):
         return_list.append({"intent": classes[r[0]], "probability": str(r[1])})
     return return_list
 
-def getResponse(ints, intents_json):
-    tag = ints[0]['intent']
-    list_of_intents = intents_json['intents']
-    for i in list_of_intents:
-        if(i['tag']== tag):
-            result = random.choice(i['responses'])
-            break
-    return result
+
+def get_book_titles_from_db():
+    # Retrieve all documents from the books_collection
+    books_cursor = books_collection.find({}, {"Name": 1, "_id": 0})
+    
+    # Extract book titles from the cursor and return as a list
+    book_titles = [book['Name'] for book in books_cursor]
+    
+    return book_titles
+
+# Example usage:
+
+
+def get_book_title(raw_text):
+    book_titles_from_db = get_book_titles_from_db()
+    
+    # Assuming book title is enclosed in single quotes in the raw input
+    # start_index = raw_text.find("'") + 1
+    # end_index = raw_text.rfind("'")
+    # if start_index != -1 and end_index != -1:
+    #     return raw_text[start_index:end_index].strip()
+    # return None
+        # Check if the extracted text matches any book title from the database
+    for book in book_titles_from_db:
+        
+        if book.lower() in raw_text.lower():
+            return book
+    return None
+
+def get_book_price(book_title):
+    # Retrieve the price of the specified book from the database
+    book = books_collection.find_one({"Name": book_title})
+    print(book)
+    if book:
+        return book['Price']
+    else:
+        return None  # Return None if the book is not found
+
+def handle_price_query(text, intent):
+    print(text)
+    # Extract the book title from the user query
+    book_title = get_book_title(text)
+    print("handle_price_query" + book_title)
+    
+    if book_title:
+        # Get the price of the specified book from the database
+        book_price = get_book_price(book_title.lower())  # Ensure lowercase for consistency
+        print(book_price)
+        
+        if book_price is not None:
+            # Generate the response with the book price
+            response_template = random.choice(intent['responses'])
+            response = response_template.replace('{price}', str(book_price))
+            response = response.replace('{book}', f"'{book_title}'")
+            return response
+        else:
+            # If the book price is not found, provide a default response
+            return f"I'm sorry, but I couldn't find the price for '{book_title}'. " \
+                   "Please check back later or inquire about a different book."
+    else:
+        # If book title is not extracted, provide a default response
+        return "I'm sorry, but I couldn't understand the book title. " \
+               "Please try again with a different query."
+
+
+def handle_availability_query(text, intent):
+    # Extract the book title from the user query
+    book_title = get_book_title(text)
+    
+    if book_title:
+        # Get the number of available books for the specified title
+
+                    # Get the number of available books for the specified title
+                    available_books_count = get_available_books(book_title)
+                    
+                    if available_books_count is not None:
+                        # Generate the response with the available books count
+                        response_template = random.choice(intent['responses'])
+                        response = response_template.replace('{count}', str(available_books_count))
+                        response = response.replace('{book}', f"'{book_title}'")
+                        return response
+                    else:
+                        # If the book is not found, provide a default response
+                        return f"I'm sorry, but I couldn't find information about '{book_title}'. " \
+                               "Please contact us for further assistance."
+    else:
+        # If book title is not extracted, provide a default response
+        return "I'm sorry, but I couldn't understand the book title. " \
+               "Please try again with a different query."
+               
+
+
+def getResponse(intents, intents_json, text):
+    print(text)
+    max_prob_intent = None
+    max_prob = 0.0
+    
+    for intent in intents:
+        # Convert the probability from string to float
+        probability = float(intent['probability'])
+        if probability > max_prob:
+            max_prob = probability
+            max_prob_intent = intent['intent']
+    
+    if max_prob_intent:
+        print(max_prob_intent)
+        list_of_intents = intents_json['intents']
+        for intent in list_of_intents:
+            if intent['tag'] == max_prob_intent:
+                if intent['tag'] == "availability_query":
+                    # Call the separate function to handle availability queries
+                    return handle_availability_query(text, intent)
+                elif intent['tag'] == "price_query":
+                    # Call the separate function to handle price queries
+                    return handle_price_query(text, intent)
+                elif intent['tag'] == "description_query":
+                    # Call the separate function to handle description queries
+                    return handle_description_query(text, intent)
+                elif intent['tag'] == "order_tracking":
+                    # Call the separate function to handle order tracking queries
+                    return handle_order_tracking_query(text, intent)
+                else:
+                    return random.choice(intent['responses'])
+    
+    return "I'm not sure how to respond to that."
+
 
 def chatbot_response(text):
-    # Check if the user query asks for the number of available books for a specific title
-    if "how many books available in" in text.lower():
-        # Extract the book title from the user query (you might need more sophisticated NLP for this)
-        # For simplicity, here we assume the book title is within single quotes
-        title_start_index = text.find("'") + 1
-        title_end_index = text.rfind("'")
-        book_title = text[title_start_index:title_end_index]
-        
-        # Get the number of available books for the specified title
-        available_books_count = get_available_books(book_title)
-        
-        if available_books_count is not None:
-            # Generate the response with the available books count
-            response = f"There are {available_books_count} available books for '{book_title}'"
-        else:
-            # If the book is not found, provide a default response
-            response = "I'm sorry, but I couldn't find information about that book. " \
-                       "Please contact us for further assistance."
-        
-        return response
-    
-    # Handle other intents and provide appropriate responses...
-    
-    # Default response if no specific intent is detected
-    else:
-        ints = predict_class(text, model)
-        res = getResponse(ints, intents)
-        return res
-        
+    intents = predict_class(text, model)
+    res = getResponse(intents, intents_json, text)
+    return res
 
 
-user_query = "How many books available in '1984'"
-response = chatbot_response(user_query)
-print(response)
+
 
 """GUI Interface
 
